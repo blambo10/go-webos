@@ -131,8 +131,18 @@ func (tv *TV) SetVolume(v int) error {
 
 // VolumeDown decrements the audio output volume.
 func (tv *TV) VolumeDown() error {
-	_, err := tv.Command(AudioVolumeDownCommand, nil)
-	return err
+	// _, err := tv.Command(AudioVolumeDownCommand, nil)
+	// return err
+
+	if tv.input == nil {
+		var err error
+		tv.input, err = tv.createInput()
+		if err != nil {
+			return err
+		}
+	}
+	tv.input.SendButton("VOLUMEDOWN")
+	return nil
 }
 
 // VolumeStatus returns information about the audio output volume.
@@ -149,14 +159,31 @@ func (tv *TV) VolumeStatus() (*Volume, error) {
 
 // VolumeUp increments the audio output volume.
 func (tv *TV) VolumeUp() error {
-	_, err := tv.Command(AudioVolumeUpCommand, nil)
-	return err
+	if tv.input == nil {
+		var err error
+		tv.input, err = tv.createInput()
+		if err != nil {
+			return err
+		}
+	}
+	tv.input.SendButton("VOLUMEUP")
+	return nil
 }
 
 // Mute mutes the TV audio output.
 func (tv *TV) Mute() error {
-	_, err := tv.Command(AudioVolumeSetMuteCommand, Payload{"mute": 1})
-	return err
+	// _, err := tv.Command(AudioVolumeSetMuteCommand, Payload{"mute": 1})
+	// return err
+
+	if tv.input == nil {
+		var err error
+		tv.input, err = tv.createInput()
+		if err != nil {
+			return err
+		}
+	}
+	tv.input.SendButton("MUTE")
+	return nil
 }
 
 // Unmute unmutes the TV audio output.
@@ -244,7 +271,8 @@ func (tv *TV) ChannelDown() error {
 }
 
 // ChannelList returns information about available channels.
-//  @todo implement a ChannelList type. This doesn't work on my TV.
+//
+//	@todo implement a ChannelList type. This doesn't work on my TV.
 func (tv *TV) ChannelList() (Message, error) {
 	return tv.Command(TVChannelListCommand, nil)
 }
@@ -256,14 +284,16 @@ func (tv *TV) ChannelUp() error {
 }
 
 // CurrentChannel returns information about the current channel.
-//  @todo implement a Channel type. This doesn't work on my TV.
+//
+//	@todo implement a Channel type. This doesn't work on my TV.
 func (tv *TV) CurrentChannel() (Message, error) {
 	return tv.Command(TVCurrentChannelCommand, nil)
 }
 
 // CurrentProgram returns information about the current program
 // shown on the CurrentChannel.
-//  @todo implement a Program type. This doesn't work on my TV.
+//
+//	@todo implement a Program type. This doesn't work on my TV.
 func (tv *TV) CurrentProgram() (Message, error) {
 	return tv.Command(TVCurrentChannelProgramCommand, nil)
 }
