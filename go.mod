@@ -1,8 +1,10 @@
 module github.com/blambo10/go-webos
 
-require (
-	github.com/gorilla/websocket v1.2.0
-	github.com/mitchellh/mapstructure v0.0.0-20180715050151-f15292f7a699
-	github.com/pkg/errors v0.8.0
+go 1.19
 
+require (
+	github.com/gorilla/websocket v1.5.0
+	github.com/kaperys/go-webos v0.0.0-20190815081811-44d344588ff2
+	github.com/mitchellh/mapstructure v1.5.0
+	github.com/pkg/errors v0.9.1
 )
